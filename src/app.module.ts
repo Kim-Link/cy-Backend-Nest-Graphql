@@ -1,49 +1,28 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { configModuleOptions } from './configuration/modules/configModuleOptions';
+import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { DatabaseModule } from './database/database.module';
-import { CatsModule } from './cats/cats.module';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
-import { ConfigModule } from '@nestjs/config';
-import * as Joi from '@hapi/joi';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
+import { MongooseModule } from '@nestjs/mongoose';
+import { mongooseModuleAsyncOptions } from './configuration/modules/mongooseModuleOptions';
+import { GqlModuleOptions, GraphQLModule } from '@nestjs/graphql';
+import { GqlModuleAsyncOption } from './configuration/modules/graphQLModuleOptions';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      validationSchema: Joi.object({
-        JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
-        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
-        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-      }),
-      envFilePath:
-        process.env.NODE_ENV === '' ? '.env' : `.env.${process.env.NODE_ENV}`,
-    }),
-    DatabaseModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      sortSchema: true,
-      debug: true,
-      playground: true,
-      installSubscriptionHandlers: true,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ request }) => {
-        const user = request.headers.authorization;
-        return { ...request, user };
-      },
-    }),
-    AuthModule,
-    UsersModule,
-    CatsModule,
+    ConfigModule.forRoot(configModuleOptions), //* Environments 설정,
+    MongooseModule.forRootAsync(mongooseModuleAsyncOptions), //* MongoDB 연결
+    GraphQLModule.forRootAsync<GqlModuleOptions>(GqlModuleAsyncOption), //* GraphQL 연결
+    //1.  요청 수 제한 모듈
+    //2.  AuthModule, //* Auth 모듈
+    // ----> 2-1. PassportModule 생성
+    // ----> 2-2. JwtModule 생성
+    //3. Clayful 연결 모듈 & 회원가입, 결재 API용 미들웨어 생성
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
+  providers: [AppService],
 })
 export class AppModule {}

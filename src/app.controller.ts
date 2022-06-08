@@ -1,19 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Public } from './skip-auth.decorator';
 
-/**
- * AppController
- *
- * 샘플용 컨트롤러
- */
-@Controller('')
+@Controller()
 export class AppController {
-  constructor(private appService: AppService) {}
+  constructor(private readonly appService: AppService) {}
 
-  @Public()
   @Get()
-  home(): string {
+  getHello(): string {
     return this.appService.getHello();
   }
 }

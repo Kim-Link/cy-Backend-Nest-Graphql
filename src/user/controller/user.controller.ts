@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
-@Controller('auth')
-export class AuthController {
+@Controller('user')
+export class UserController {
   @Get()
   async findAll(): Promise<string> {
     return '';
