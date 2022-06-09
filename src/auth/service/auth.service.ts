@@ -1,26 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthInput } from '../dto/create-auth.input';
-import { UpdateAuthInput } from '../dto/update-auth.input';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UserService } from 'src/user/service/user.service';
 
 @Injectable()
 export class AuthService {
-  create(createAuthInput: CreateAuthInput) {
-    return 'This action adds a new auth';
-  }
+  constructor(private readonly userService: UserService) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async validateUser(email: string, plainTextPassword: string): Promise<any> {
+    const user = await this.userService.findOne(email);
+    if (!user) return new BadRequestException('Wrong credentials provided');
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthInput: UpdateAuthInput) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    return user;
   }
 }

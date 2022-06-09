@@ -36,7 +36,10 @@ export const configModuleOptions: ConfigModuleOptions = {
     PRE_FIX: Joi.string().default('/pro'),
 
     //? JWT Options //
-    SALT: Joi.number().required(),
+    SALT: Joi.string().required(),
+    SALT_ROUND: Joi.number().required(),
+
+    JWT_ALGORITHM: Joi.string().default('HS256'),
     JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
     JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
     JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
@@ -49,6 +52,7 @@ export const configModuleOptions: ConfigModuleOptions = {
 
     //? Clayful Option //
     CLAYFUL_API_ACCESS_TOKEN: Joi.string().required(),
+    CLAYFUL_API_SECRET: Joi.string().required(),
   }),
 
   /**

@@ -2,19 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input CreateUserInput {
+input CreateUserDto {
   email: String!
 }
 
 type Mutation {
-  create(createUserInput: CreateUserInput!): User!
+  create(createUserDto: CreateUserDto!): User!
   remove(id: Float!): User!
-  update(updateUserInput: UpdateUserInput!): User!
+  update(updateUserDto: UpdateUserDto!): User!
 }
 
 type Query {
   findAll: [User!]!
-  findOne(id: Float!): User!
+  findOne(email: String!): User!
 }
 
 enum Sex {
@@ -23,7 +23,7 @@ enum Sex {
   NONE
 }
 
-input UpdateUserInput {
+input UpdateUserDto {
   email: String!
 }
 

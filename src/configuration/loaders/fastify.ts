@@ -14,7 +14,7 @@ export const corsOptions = {
 };
 
 export const fastifyMiddleware = async (app: NestFastifyApplication) => {
-  //? fastify Middleware //
+  //? Nest fastify Middleware //
   await app.register(fastifyHelmet, {
     contentSecurityPolicy: {
       directives: {
@@ -31,34 +31,35 @@ export const fastifyMiddleware = async (app: NestFastifyApplication) => {
       },
     },
   });
+
   // await app.register(fastifyCsrf);
   await app.register(fastifyCookie, {
     secret: app.get(ConfigService).get<string>('COOKIE_SECRET'),
   });
 
-  // //? Logging Middleware //
+  //? Logging Middleware //
   // process.env.NODE_ENV !== 'testing' && app.use(LoggerMiddleware);
 
-  //?  //
-  app.getHttpAdapter();
+  // //  ? //
+  // app.getHttpAdapter();
 
   //? Server Prefix Setting //
   app.setGlobalPrefix(app.get(ConfigService).get<string>('PRE_FIX') || '');
 
-  //? Schema Validation Pipe //
+  //? Global Interceptors //
+  // app.useGlobalInterceptors(new ) //*
+
+  //? Global Validation Pipe //
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
+      transform: true, //*
+      whitelist: true, //* DTO에 없는 Request Body 속성 제거
+      forbidNonWhitelisted: true, //*
     }),
   );
 
-  //? catch(error) Error Handling //
-  app.useGlobalFilters(new HttpExceptionFilter());
-
-  //? Interceptors //
-  // app.useGlobalInterceptors(new )
+  //? Global Error Handling //
+  app.useGlobalFilters(new HttpExceptionFilter()); //* Catch()로 전달된 Error 객체 핸들링 모듈
 
   // //? Cors Setting //
   // app.enableCors(corsOptions);
