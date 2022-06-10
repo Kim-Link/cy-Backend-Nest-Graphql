@@ -2,7 +2,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Request } from 'express';
 import {
   GqlModuleAsyncOptions,
-  GqlModuleOptions,
   GqlOptionsFactory,
   SubscriptionConfig,
 } from '@nestjs/graphql';
@@ -23,7 +22,7 @@ export class GraphQLService implements GqlOptionsFactory {
       installSubscriptionHandlers: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       context: apolloContextOptions,
-      subscriptions: subscriptionConfig,
+      // subscriptions: subscriptionConfig,
     };
   }
 }
@@ -39,6 +38,7 @@ export const apolloContextOptions = async ({ req }: { req: Request }) => ({
   refresh: req.headers.refreshToken,
 });
 
-export const subscriptionConfig: SubscriptionConfig = {
-  'graphql-ws': true,
-};
+//! 중단됨 다른 웹소켓 사용 //
+// export const subscriptionConfig: SubscriptionConfig = {
+//   'graphql-ws': true,
+// };

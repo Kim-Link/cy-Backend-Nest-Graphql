@@ -3,7 +3,7 @@ import fastifyCsrf from 'fastify-csrf';
 import fastifyCookie from 'fastify-cookie';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
-import { HttpExceptionFilter } from '../middlewares/error/http-exception.filter';
+import { HttpExceptionFilter } from '../exceptionFilter/http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 
 export const corsOptions = {
@@ -13,8 +13,8 @@ export const corsOptions = {
   credentials: true,
 };
 
-export const fastifyMiddleware = async (app: NestFastifyApplication) => {
-  //? Nest fastify Middleware //
+export const globalMiddleware = async (app: NestFastifyApplication) => {
+  //? Global Middleware for NestJS fastify  //
   await app.register(fastifyHelmet, {
     contentSecurityPolicy: {
       directives: {
@@ -37,19 +37,19 @@ export const fastifyMiddleware = async (app: NestFastifyApplication) => {
     secret: app.get(ConfigService).get<string>('COOKIE_SECRET'),
   });
 
-  //? Logging Middleware //
+  //? Global Middleware for Logging  //
   // process.env.NODE_ENV !== 'testing' && app.use(LoggerMiddleware);
 
   // //  ? //
-  // app.getHttpAdapter();
+  // const httpAdapter = app.getHttpAdapter();
 
-  //? Server Prefix Setting //
-  app.setGlobalPrefix(app.get(ConfigService).get<string>('PRE_FIX') || '');
+  //? Global Middleware for API Prefix //
+  // app.setGlobalPrefix(app.get(ConfigService).get<string>('PRE_FIX') || '');
 
   //? Global Interceptors //
-  // app.useGlobalInterceptors(new ) //*
+  // app.useGlobalInterceptors(new )
 
-  //? Global Validation Pipe //
+  //? Global Validation Pipes //
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true, //*
@@ -58,9 +58,6 @@ export const fastifyMiddleware = async (app: NestFastifyApplication) => {
     }),
   );
 
-  //? Global Error Handling //
-  app.useGlobalFilters(new HttpExceptionFilter()); //* Catch()로 전달된 Error 객체 핸들링 모듈
-
-  // //? Cors Setting //
-  // app.enableCors(corsOptions);
+  //? Global Exception filters //
+  app.useGlobalFilters(new HttpExceptionFilter());
 };

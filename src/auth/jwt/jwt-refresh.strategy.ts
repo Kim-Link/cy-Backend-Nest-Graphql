@@ -5,7 +5,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserService } from 'src/user/service/user.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class JwtRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh-token',
+) {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
@@ -13,15 +16,21 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
-          console.log(request?.cookies?.Authentication);
-          return request?.cookies?.Authentication;
+          console.log('refresh token', request);
+          return request?.cookies?.Refresh;
         },
       ]),
-      secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      passReqToCallback: true,
     });
   }
 
-  async validate(payload: any) {
-    return this.userService.getById(payload.id);
+  async validate(req, payload: any) {
+    const refreshToken = req.cookies?.Refresh;
+    // return this.userService.getUserIfRefreshTokenMatches(
+    //   refreshToken,
+    //   payload.id,
+    // );
+    return true;
   }
 }
