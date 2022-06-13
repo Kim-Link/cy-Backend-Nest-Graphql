@@ -4,20 +4,23 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { FastifyReply } from 'fastify';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
+  //! 예외 처리 필터 REST, GraphQL
+
   catch(exception: HttpException, host: ArgumentsHost) {
+    console.log('======= HttpExceptionFilter ======');
+
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    const reply = ctx.getResponse<FastifyReply>();
     const status = exception.getStatus();
 
-    response.status(status).json({
+    reply.code(status).send({
       statusCode: status,
       timestamp: new Date().toISOString(),
-      path: request.url,
+      message: exception.message,
     });
   }
 }

@@ -16,13 +16,11 @@ async function bootstrap() {
 
   await globalMiddleware(app);
 
-  
   await app.listen(
     app.get(ConfigService).get<number>('PORT'),
     app.get(ConfigService).get<string>('HOST'),
   );
 
-  
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());

@@ -5,6 +5,7 @@ import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '../exceptionFilter/http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { RequestTargetGuard } from '../guards/jwt.guard';
 
 export const corsOptions = {
   origin: '*',
@@ -60,4 +61,6 @@ export const globalMiddleware = async (app: NestFastifyApplication) => {
 
   //? Global Exception filters //
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  // app.useGlobalGuards(new RequestTargetGuard());
 };

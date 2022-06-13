@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { mongooseModuleAsyncOptions } from './modules/mongooseModuleOptions';
 import { GqlModuleAsyncOption } from './modules/graphQLModuleOptions';
+import { RequestTargetGuard } from './configuration/guards/jwt.guard';
 import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 import { GqlAuthGuard } from './auth/jwt/jwt-auth-graphql.guard';
 
@@ -23,6 +24,7 @@ import { GqlAuthGuard } from './auth/jwt/jwt-auth-graphql.guard';
   ],
   controllers: [],
   providers: [
+    // { provide: APP_GUARD, useClass: RequestTargetGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: GqlAuthGuard },
   ],
