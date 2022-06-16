@@ -21,6 +21,7 @@ async function bootstrap() {
     app.get(ConfigService).get<string>('HOST'),
   );
 
+  
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
