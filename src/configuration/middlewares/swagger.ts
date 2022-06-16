@@ -28,5 +28,3 @@ export const swaggerMiddleware = async (app: NestFastifyApplication) => {
 
   SwaggerModule.setup('api', app, document);
 };
-
-// const securitySchemeObject: SecuritySchemeObject = {};

@@ -3,18 +3,39 @@
 # ------------------------------------------------------
 
 input CreateUserDto {
-  email: String!
+  """The birthday of the user"""
+  birth: String
+  created_at: String!
+  currentHashedRefreshToken: String
+
+  """The email of the user"""
+  email: String
+
+  """The name of the user"""
+  name: String
+
+  """The password of the user"""
+  password: String
+  photo: String
+  role: UserRole!
+
+  """유저 성별"""
+  sex: Sex!
+  updated_at: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Mutation {
-  create(createUserDto: CreateUserDto!): User!
-  remove(id: Float!): User!
-  update(updateUserDto: UpdateUserDto!): User!
+  create(createUserDto: CreateUserDto!): UserType!
+  register(createUserDto: CreateUserDto!): UserType!
 }
 
 type Query {
-  findAll: [User!]!
-  findOne(email: String!): User!
+  findAll: [UserType!]!
 }
 
 enum Sex {
@@ -23,34 +44,39 @@ enum Sex {
   NONE
 }
 
-input UpdateUserDto {
-  email: String!
-}
-
-"""User"""
-type User {
-  birth: String!
-  career_vision: String!
-  consultant_qualifications: [String!]!
-  current_hashed_refresh_token: String!
-  email: String!
-  finance_vision: String!
-  health_vision: String!
-  leisure_vision: String!
-  living_vision: String!
-  name: String!
-  password: String!
-  photo: String!
-  relationship_vision: String!
-  role: UserRole!
-  sex: Sex!
-  social_vision: String!
-  study_vision: String!
-}
-
 enum UserRole {
   ADMIN
   AGENCY
   CONTSULTANT
   USER
+}
+
+"""User"""
+type UserType {
+  """"""
+  _id: String!
+
+  """"""
+  birth: DateTime!
+
+  """"""
+  currentHashedRefreshToken: String!
+
+  """"""
+  email: String!
+
+  """"""
+  name: String!
+
+  """"""
+  password: String!
+
+  """"""
+  photo: String!
+
+  """"""
+  role: UserRole!
+
+  """"""
+  sex: Sex!
 }

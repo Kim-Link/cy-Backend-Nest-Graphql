@@ -1,24 +1,24 @@
 import * as mongoose from 'mongoose';
-import { Sex } from '../enums/Sex';
-import { UserRole } from '../enums/UserRole';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Exclude } from 'class-transformer';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Sex } from '../enums/Sex';
+import { UserRole } from '../enums/UserRole';
+// import { ConsultingEntity } from '../../eight_area/entities/consulting.entity';
+// import { AgencyEntity } from '../../eight_area/entities/agency.entity';
 
-export type UserDocument = User & Document;
-
+export type UserDocument = UserEntity & Document;
 @Schema({
+  // id: true,
+  // _id: false,
+  versionKey: false,
   collection: 'User',
   timestamps: {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   },
-  id: true,
-  versionKey: false,
 })
-@ObjectType({ description: 'User' })
-export class User {
+export class UserEntity {
   // /**
   //  * agency_id
   //  */
@@ -41,89 +41,79 @@ export class User {
   // })
   // consultant_id?: ConsultingEntity[];
 
+  // @Prop({ type: mongoose.Schema.Types.ObjectId })
+  // id: mongoose.Schema.Types.ObjectId;
+
   /**
    * 유저 이메일
    */
   @Prop({ required: false, unique: true, max: 255 })
-  @Field()
   email: string;
 
   /**
    * 유저 이름
    */
   @Prop({ required: false, type: String, min: 2, max: 50 })
-  @Field()
   name: string;
 
   /**
    * 유저 생년월일 (YYYY-MM-DD)
    */
   @Prop({ required: false, type: mongoose.Schema.Types.Date })
-  @Field()
   birth: string;
 
   /**
    * 유저 비밀번호
    */
   @Prop({ required: false, type: String, min: 2, max: 255 })
-  @Field()
-  @Exclude()
   password: string;
 
   /**
    * 직업 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   career_vision?: string;
 
   /**
    * 학습 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   study_vision?: string;
 
   /**
    * 건강 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   health_vision?: string;
 
   /**
    * 관계 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   relationship_vision?: string;
 
   /**
    * 주거 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   living_vision?: string;
 
   /**
    * 사회참여 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   social_vision?: string;
 
   /**
    * 여가 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   leisure_vision?: string;
 
   /**
    * 재무 비전
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   finance_vision?: string;
 
   /**
@@ -135,7 +125,6 @@ export class User {
     enum: Object.values(Sex),
     default: Sex.NONE,
   })
-  @Field((type) => Sex)
   sex: Sex;
 
   /**
@@ -147,7 +136,6 @@ export class User {
     enum: Object.values(UserRole),
     default: UserRole.USER,
   })
-  @Field((type) => UserRole)
   role: UserRole;
 
   /**
@@ -157,31 +145,40 @@ export class User {
     required: false,
     type: String,
   })
-  @Field()
   photo?: string;
 
   /**
    * 컨설턴트 자격증명들
    */
   @Prop({ nullable: true, required: false, type: [String] })
-  @Field((type) => [String])
   consultant_qualifications?: string[];
 
   /**
    * 리프레시 토큰
    */
   @Prop({ nullable: true, required: false, type: String })
-  @Field()
   @Exclude()
-  current_hashed_refresh_token?: string;
+  currentHashedRefreshToken?: string;
 
   /**
    * 삭제여부
    */
-  @Prop({ type: Boolean, required: false })
-  is_deleted?: boolean;
+  @Prop({ required: false, type: Boolean, default: false })
+  is_deleted: boolean;
+
+  /**
+   * 작성날짜 (YYYY-MM-DD)
+   */
+  @Prop({ required: false, type: mongoose.Schema.Types.Date })
+  created_at: string;
+
+  /**
+   * 수정날짜 (YYYY-MM-DD)
+   */
+  @Prop({ required: false, type: mongoose.Schema.Types.Date })
+  updated_at: string;
 }
 
-const UserSchema = SchemaFactory.createForClass(User);
+const UserSchema = SchemaFactory.createForClass(UserEntity);
 
 export { UserSchema };

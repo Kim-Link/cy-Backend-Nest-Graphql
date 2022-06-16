@@ -11,8 +11,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
   //! 예외 처리 필터 REST, GraphQL
 
   catch(exception: HttpException, host: ArgumentsHost) {
-    console.log('======= HttpExceptionFilter ======');
-
     const ctx = host.switchToHttp();
     const reply = ctx.getResponse<FastifyReply>();
     const status = exception.getStatus();

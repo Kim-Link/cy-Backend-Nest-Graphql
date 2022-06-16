@@ -21,7 +21,11 @@ export class GraphQLService implements GqlOptionsFactory {
       playground: true,
       installSubscriptionHandlers: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: apolloContextOptions,
+      context: ({ request }) => {
+        const user = request.headers.authorization;
+        const user_refresh = request.headers.refresh;
+        return { ...request, user, user_refresh };
+      },
       // subscriptions: subscriptionConfig,
     };
   }
@@ -31,12 +35,6 @@ export const GqlModuleAsyncOption: GqlModuleAsyncOptions = {
   driver: ApolloDriver,
   useClass: GraphQLService,
 };
-
-export const apolloContextOptions = async ({ req }: { req: Request }) => ({
-  ...req,
-  token: req.headers.authorization,
-  refresh: req.headers.refreshToken,
-});
 
 //! 중단됨 다른 웹소켓 사용 //
 // export const subscriptionConfig: SubscriptionConfig = {
