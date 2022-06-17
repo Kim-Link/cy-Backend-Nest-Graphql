@@ -2,14 +2,10 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from '../service/user.service';
 import { CreateUserDto, UpdateUserDto } from '../dto';
 import { UserType } from '../interfaces/type/user.type';
+import { Public } from 'src/configuration/decorators/skip-auth.decorator';
 @Resolver((of) => UserType)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
-
-  @Mutation((returns) => UserType)
-  async create(@Args('createUserDto') createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
 
   @Query((returns) => [UserType])
   async findAll() {

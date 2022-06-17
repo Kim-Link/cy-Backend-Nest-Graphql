@@ -29,19 +29,44 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input LoginUserDto {
+  """The email of the user"""
+  email: String
+
+  """The password of the user"""
+  password: String
+}
+
 type Mutation {
-  create(createUserDto: CreateUserDto!): UserType!
+  login(loginData: LoginUserDto!): TokenType!
   register(createUserDto: CreateUserDto!): UserType!
 }
 
 type Query {
   findAll: [UserType!]!
+  logOut: TokenType!
+  refresh: TokenType!
 }
 
 enum Sex {
   FEMALE
   MALE
   NONE
+}
+
+"""token"""
+type TokenType {
+  """The accessOption of the token"""
+  accessOption: String!
+
+  """The accessToken of the token"""
+  accessToken: String!
+
+  """The refreshOption of the token"""
+  refreshOption: String!
+
+  """The refreshToken of the token"""
+  refreshToken: String!
 }
 
 enum UserRole {

@@ -1,11 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Sex } from 'src/user/enums/Sex';
 import { UserRole } from 'src/user/enums/UserRole';
-import { User } from '../interface/user.interface';
+import { IUser } from '../interface/user.interface';
 
 @ObjectType({ description: 'User' })
 export class UserType {
-  constructor(user: User) {
+  constructor(user: IUser) {
     Object.assign(this, user);
   }
 

@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 import { Sex } from 'src/user/enums/Sex';
 import { UserRole } from 'src/user/enums/UserRole';
 
-export interface User extends Document {
+export interface IUser extends Document {
   readonly _id: object;
   readonly email: string;
   readonly name: string;

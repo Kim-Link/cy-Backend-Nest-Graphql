@@ -33,7 +33,7 @@ export class RequestTargetGuard extends AuthGuard('jwt') {
     console.log('======= RequestTargetGuard canActivate =======');
     // 0. 앱 실행 로드 (미들웨어, 모듈 실행)
     // 글로벌 가드 실행
-    // canActivate 오버라이딩 => 퍼블릭 데코레이터 시 return true;
+    // canActivate 오버라이딩 => 퍼블릭 or http/grahpql 시 return true;
     // 1-1. super.canActivate(context)
     // 1-1. getRequest and getResponse 핸들링
     // 2. createPassportContext(request, response) 실행하여 passport.authenticate 함수 리턴

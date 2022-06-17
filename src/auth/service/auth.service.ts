@@ -11,7 +11,7 @@ import { CreateUserDto } from 'src/user/dto';
 import { UserService } from 'src/user/service/user.service';
 import { AuthRepository } from '../repository/auth.repository';
 import { compare, hash } from 'bcrypt';
-import { User } from 'src/user/interfaces/interface/user.interface';
+import { IUser } from 'src/user/interfaces/interface/user.interface';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { PayloadDto } from '../dto/jwt.payload.dto';
 
@@ -42,11 +42,8 @@ export class AuthService {
     );
   }
 
-  async validateUser(
-    email: string,
-    plainTextPassword: string,
-  ): Promise<UserEntity> {
-    const user = await this.userService.findOne(email);
+  async validateUser(email: string, plainTextPassword: string): Promise<IUser> {
+    const user: IUser = await this.userService.findOne(email)['_doc'];
 
     await this.verifyPassword(this.salt + plainTextPassword, user.password);
 
@@ -76,7 +73,7 @@ export class AuthService {
     return newUser;
   }
 
-  async login(user: User): Promise<any> {
+  async login(user: IUser): Promise<any> {
     const { token: accessToken, ...accessOption } = await this.getToken(
       { id: user._id.toString() },
       'ACCESS_TOKEN',
@@ -95,7 +92,7 @@ export class AuthService {
     };
   }
 
-  public async getToken(payload: PayloadDto, subject: string) {
+  async getToken(payload: PayloadDto, subject: string) {
     const [tokenGenerator, cookieOptions] = await Promise.all([
       this.getTokenGenerator({ subject }),
       this.genCookieOption({ subject }),
@@ -125,15 +122,24 @@ export class AuthService {
     return () => this.jwtService.sign({}, jwtOptions);
   };
 
-  private async genCookieOption({ subject }) {
+  async genCookieOption({ subject }) {
+    let maxAgeOption: number;
+    const getMaxAgeOption = () => {
+      if (subject === 'ACCESS_TOKEN') {
+        maxAgeOption = Number(this.access_token_expiresIn);
+      } else if (subject === 'REFESH_TOKEN') {
+        maxAgeOption = Number(this.refresh_token_expiresIn);
+      } else if (subject === 'LOGOUT') {
+        maxAgeOption = 0;
+      }
+    };
+    getMaxAgeOption();
+
     const cookieOptions = {
       domain: 'localhost',
       path: '/',
       httpOnly: true,
-      maxAge:
-        subject === 'ACCESS_TOKEN'
-          ? Number(this.access_token_expiresIn)
-          : Number(this.refresh_token_expiresIn),
+      maxAge: maxAgeOption,
     };
 
     return cookieOptions;

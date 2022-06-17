@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEntity, UserDocument } from '../entities/user.entity';
-import { User } from '../interfaces/interface/user.interface';
+import { IUser } from '../interfaces/interface/user.interface';
 
 @Injectable()
 export class UserRepository {
@@ -19,7 +19,12 @@ export class UserRepository {
     return await this.userModel.findOne({ email }).exec();
   }
 
-  async findById(id: number): Promise<UserEntity> {
-    return await this.userModel.findById(id);
+  async findById(_id: string): Promise<any> {
+    const returnUser = await this.userModel.findById(_id);
+    return returnUser;
+  }
+
+  async updateOne(_id: string, refreshToken: string) {
+    await this.userModel.updateOne({ _id }, { refreshToken });
   }
 }
