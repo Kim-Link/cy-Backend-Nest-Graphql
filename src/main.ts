@@ -14,6 +14,7 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
+  
   await globalMiddleware(app);
 
   await app.listen(
