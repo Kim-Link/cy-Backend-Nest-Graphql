@@ -13,6 +13,7 @@ export class AuthRepository {
 
   async createUser(createUserDto: CreateUserDto) {
     const newUserOption = new this.userModel(createUserDto);
-    return await this.userModel.create(newUserOption);
+    const user = await newUserOption.save();
+    return user.toObject();
   }
 }

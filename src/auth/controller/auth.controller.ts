@@ -11,9 +11,7 @@ import { Public } from 'src/configuration/decorators/skip-auth.decorator';
 import { FastifyReply } from 'fastify';
 import { LocalAuthGuard } from '../local/local-auth.guard';
 import { AuthService } from '../service/auth.service';
-import { ApiBadRequestResponse, ApiBody, ApiOperation } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/user/dto';
-import { LoginUserDto } from '../dto/login-user.dto';
 import { IUser } from '../../user/interfaces/interface/user.interface';
 import { JwtRefreshGuard } from '../jwt/jwt-refresh.guard';
 import { UserService } from 'src/user/service/user.service';
@@ -28,8 +26,6 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  @ApiBody({ type: CreateUserDto })
-  @ApiBadRequestResponse()
   async register(@Body() user: CreateUserDto): Promise<any> {
     return await this.authService.register(user);
   }
@@ -37,11 +33,6 @@ export class AuthController {
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  @ApiBody({ type: LoginUserDto })
-  @ApiOperation({
-    summary: 'Login',
-    description: 'Login with email and password',
-  })
   async login(
     @Req() req,
     @Res({ passthrough: true }) res: FastifyReply,

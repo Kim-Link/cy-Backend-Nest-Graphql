@@ -43,8 +43,8 @@ export class AuthService {
   }
 
   async validateUser(email: string, plainTextPassword: string): Promise<IUser> {
-    const user: IUser = await this.userService.findOne(email)['_doc'];
-
+    const user: IUser = await this.userService.findOne(email);
+    console.log('validateUser: ', user);
     await this.verifyPassword(this.salt + plainTextPassword, user.password);
 
     return user;
@@ -63,12 +63,10 @@ export class AuthService {
   async register(user: CreateUserDto) {
     const hashedPassword = await hash(this.salt + user.password, this.round);
 
-    const returnUser = await this.authRepository.createUser({
+    const { password, ...newUser } = await this.authRepository.createUser({
       ...user,
       password: hashedPassword,
     });
-
-    const { password, ...newUser } = returnUser['_doc'];
 
     return newUser;
   }

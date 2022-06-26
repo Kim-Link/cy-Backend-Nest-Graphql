@@ -6,6 +6,9 @@ import { UserService } from './service/user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserEntity, UserSchema } from './entities/user.entity';
 import { UserRepository } from './repository/user.repository';
+import { VisionService } from './service/vision.service';
+import { VisionRepository } from './repository/vision.repository';
+import { VisionController } from './controller/vision.controller';
 
 @Module({
   imports: [
@@ -15,8 +18,17 @@ import { UserRepository } from './repository/user.repository';
       'Attale-Pro',
     ),
   ],
-  controllers: [UserController],
-  providers: [UserResolver, UserService, UserRepository],
+  controllers: [UserController, VisionController],
+  providers: [
+    //? Service DI
+    UserService,
+    VisionService,
+    //? Resolver DI
+    UserResolver,
+    //?Repository DI
+    UserRepository,
+    VisionRepository,
+  ],
   exports: [UserService, UserRepository],
 })
 export class UserModule {}

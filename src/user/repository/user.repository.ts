@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEntity, UserDocument } from '../entities/user.entity';
-import { IUser } from '../interfaces/interface/user.interface';
 
 @Injectable()
 export class UserRepository {
@@ -12,7 +11,7 @@ export class UserRepository {
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
-    return await this.userModel.find().exec();
+    return await this.userModel.find().select({ password: 0 }).exec();
   }
 
   async findOne(email: string): Promise<UserEntity> {
@@ -20,7 +19,7 @@ export class UserRepository {
   }
 
   async findById(_id: string): Promise<any> {
-    const returnUser = await this.userModel.findById(_id);
+    const returnUser = await this.userModel.findById(_id).select('-password');
     return returnUser;
   }
 

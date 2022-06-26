@@ -31,7 +31,7 @@ import { AuthService } from './service/auth.service';
     AuthResolver,
     AuthService,
     AuthRepository,
-    LocalStrategy, //* [ REST AND GraphQL ] Token Validation
+    LocalStrategy, //* [ REST ] Token Validation
     JwtStrategy, //* [ REST ] Jwt Strategy DI
     JwtRefreshStrategy, //* [ REST ] Jwt Refresh Token Strategy DI
     JwtGraphqlStrategy, //* [ GraphQL ] Jwt Strategy DI

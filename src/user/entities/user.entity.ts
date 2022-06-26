@@ -4,20 +4,12 @@ import { Document } from 'mongoose';
 import { Exclude } from 'class-transformer';
 import { Sex } from '../enums/Sex';
 import { UserRole } from '../enums/UserRole';
+import { schemaOptions } from 'src/configuration/utils/schema.options';
 // import { ConsultingEntity } from '../../eight_area/entities/consulting.entity';
 // import { AgencyEntity } from '../../eight_area/entities/agency.entity';
 
 export type UserDocument = UserEntity & Document;
-@Schema({
-  // id: true,
-  // _id: false,
-  versionKey: false,
-  collection: 'User',
-  timestamps: {
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-  },
-})
+@Schema(schemaOptions('User'))
 export class UserEntity {
   // /**
   //  * agency_id

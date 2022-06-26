@@ -10,6 +10,7 @@ import { mongooseModuleAsyncOptions } from './modules/mongooseModuleOptions';
 import { GqlModuleAsyncOption } from './modules/graphQLModuleOptions';
 import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 import { GqlAuthGuard } from './auth/jwt/jwt-auth-graphql.guard';
+import { EightAreaModule } from './eight_area/eight_area.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { GqlAuthGuard } from './auth/jwt/jwt-auth-graphql.guard';
     AuthModule, //* Auth (JwtModule, PassportModule, ClayfulModule)
     // Clayful 연결 모듈 & 회원가입, 결재 API용 미들웨어 생성
     UserModule,
+    EightAreaModule,
   ],
   controllers: [],
   providers: [
