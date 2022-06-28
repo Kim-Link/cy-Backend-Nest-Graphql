@@ -19,6 +19,11 @@ export class AuthResolver {
     private readonly userService: UserService,
   ) {}
 
+  // Mutation register(createUserDto): UserType
+  // Mutation login(loginData): TokenType
+  // Query logOut(): TokenType
+  // Query refresh(): TokenType
+
   @Public()
   @Mutation((returns) => UserType)
   async register(@Args('createUserDto') user: CreateUserDto): Promise<IUser> {
@@ -45,9 +50,9 @@ export class AuthResolver {
 
     return {
       accessToken: accessToken,
-      accessOption: JSON.stringify(accessOption),
+      accessOption: accessOption,
       refreshToken: refreshToken,
-      refreshOption: JSON.stringify(refreshOption),
+      refreshOption: refreshOption,
     };
   }
 

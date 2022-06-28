@@ -165,10 +165,10 @@ export class CreateUserDto {
   @IsString()
   @Optional()
   @Field()
-  readonly created_at: string;
+  readonly created_at?: string;
 
   @IsString()
   @Optional()
   @Field()
-  readonly updated_at: string;
+  readonly updated_at?: string;
 }

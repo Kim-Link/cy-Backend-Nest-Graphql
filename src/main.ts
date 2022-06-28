@@ -5,7 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-import globalMiddleware from './configuration/middlewares';
+import loaders from './configuration/middlewares';
 declare const module: any;
 
 async function bootstrap() {
@@ -14,8 +14,7 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  
-  await globalMiddleware(app);
+  await loaders(app);
 
   await app.listen(
     app.get(ConfigService).get<number>('PORT'),
