@@ -15,7 +15,7 @@ import { VisionController } from './controller/vision.controller';
     ConfigModule,
     MongooseModule.forFeature(
       [{ name: UserEntity.name, schema: UserSchema }],
-      'Attale-Pro',
+      'test',
     ),
   ],
   controllers: [UserController, VisionController],

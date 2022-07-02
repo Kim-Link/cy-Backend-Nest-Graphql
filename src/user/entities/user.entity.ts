@@ -11,30 +11,6 @@ import { schemaOptions } from 'src/configuration/utils/schema.options';
 export type UserDocument = UserEntity & Document;
 @Schema(schemaOptions('User'))
 export class UserEntity {
-  // /**
-  //  * agency_id
-  //  */
-  // @Prop({
-  //   nullable: true,
-  //   required: false,
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   default: null,
-  // })
-  // agency_id?: AgencyEntity;
-
-  // /**
-  //  * 컨설팅 내용 조회
-  //  */
-  // @Prop({
-  //   nullable: true,
-  //   required: false,
-  //   type: [mongoose.Schema.Types.ObjectId],
-  //   default: null,
-  // })
-  // consultant_id?: ConsultingEntity[];
-
-  // @Prop({ type: mongoose.Schema.Types.ObjectId })
-  // id: mongoose.Schema.Types.ObjectId;
 
   /**
    * 유저 이메일

@@ -15,7 +15,7 @@ import { EightAreaModule } from './eight_area/eight_area.module';
 @Module({
   imports: [
     ConfigModule.forRoot(configModuleOptions), //* Environments 설정,
-    MongooseModule.forRootAsync(mongooseOptions('Attale-Pro', 'MONGO_URL')), //* MongoDB 연결
+    MongooseModule.forRootAsync(mongooseOptions('test', 'MONGO_URL')), //* MongoDB 연결
     GraphQLModule.forRootAsync<GqlModuleOptions>(GqlModuleAsyncOption), //* GraphQL 연결
     AuthModule, //* Auth (JwtModule, PassportModule, ClayfulModule)
     // Clayful 연결 모듈 & 회원가입, 결재 API용 미들웨어 생성

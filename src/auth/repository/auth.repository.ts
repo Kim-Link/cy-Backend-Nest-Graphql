@@ -7,7 +7,7 @@ import { UserEntity, UserDocument } from 'src/user/entities/user.entity';
 @Injectable()
 export class AuthRepository {
   constructor(
-    @InjectModel(UserEntity.name, 'Attale-Pro')
+    @InjectModel(UserEntity.name, 'test')
     private userModel: Model<UserDocument>,
   ) {}
 
